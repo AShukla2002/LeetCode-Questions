@@ -1,26 +1,25 @@
-class Solution {
+class Solution
+{
 public:
-    int search(vector<int>& nums, int tar) {
+    int search(vector<int> &nums, int tar)
+    {
         int n = nums.size();
-        int left = 0,right = n-1;
-        
-        while(left<=right){
-            int mid = left+(right-left)/2;
-            if(nums[mid]==tar)
-                return mid;
-            
-            if(nums[left]<=nums[mid]){
-                if (tar >= nums[left] && tar < nums[mid])
-                    right = mid - 1;
+        int l = 0, r = n - 1;
+        while (l <= r)
+        {
+            int m = l + (r - l) / 2;
+            if (nums[m] == tar)
+                return m;
+
+            if (nums[l] <= nums[m])
+                if (tar >= nums[l] && tar < nums[m])
+                    r = m - 1;
                 else
-                    left = mid + 1;
-            }
-            else{
-                if (tar <= nums[right] && tar > nums[mid])
-                    left = mid+1;
-                else
-                    right = mid - 1;
-            }
+                    l = m + 1;
+            else if (tar <= nums[r] && tar > nums[m])
+                l = m + 1;
+            else
+                r = m - 1;
         }
         return -1;
     }
