@@ -11,27 +11,21 @@
  */
 class Solution {
 public:
-    TreeNode* buildTreeHelper(vector<int>& ino, vector<int>& po, int inSt, int ien, int pSt, int pEn, unordered_map<int, int>& map) {
-        if (inSt > ien || pSt > pEn)
-            return nullptr;
-
-        int rootValue = po[pEn];
-        int rootIndex = map[rootValue];
-        int LSbTreeSize = rootIndex - inSt;
-
-        TreeNode* root = new TreeNode(rootValue);
-        root->left = buildTreeHelper(ino, po, inSt, rootIndex - 1, pSt, pSt + LSbTreeSize - 1, map);
-        root->right = buildTreeHelper(ino, po, rootIndex + 1, ien, pSt + LSbTreeSize, pEn - 1, map);
-
-        return root;
+    TreeNode* buildTree(vector<int>& ino, vector<int>& post) {
+    int i1 = post.size()-1;
+        return solve(i1,ino,post,0,ino.size()-1);
     }
-    TreeNode* buildTree(vector<int>& ino, vector<int>& po) {
-        int n = ino.size();
-        unordered_map<int, int> map;
-        for (int i = 0; i < n; i++) {
-            map[ino[i]] = i;
+    TreeNode* solve(int &i,vector<int> &in,vector<int> &post,int l,int r){
+        if(l>r)return NULL;
+        int x = r;
+        while(post[i] != in[x]){
+            x--;
         }
-
-        return buildTreeHelper(ino, po, 0, n - 1, 0, n - 1, map);
+        i--;
+        // cout<<in[x]<<" ";
+        TreeNode* root = new TreeNode(in[x]);
+        root->right = solve(i,in,post,x+1,r);
+        root->left = solve(i,in,post,l,x-1);
+        return root;
     }
 };
